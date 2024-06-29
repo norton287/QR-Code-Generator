@@ -25,7 +25,7 @@
 ## Installation
 ### Clone the Repository:
 ```Bash
-git clone https://your-repository-url.git
+git clone https://github.com/norton287/QR-Code-Generator.git
 ```
 ### Install Dependencies:
 ```Bash
