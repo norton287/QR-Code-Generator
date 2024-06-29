@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+ 	<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Expires" content="Sat, 01 Jan 2000 00:00:00 GMT">
+    <meta http-equiv="Pragma" content="no-cache">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            	font-size: 10px;
+	            line-height: 1.1em;
+    	        font-family: "Trebuchet MS", sans-serif;
+        	    color: #000;
+            	display: flex;
+	            flex-direction: column;
+    	        justify-content: center;
+        	    align-items: center;
+            	overflow-y: auto; /* Enable vertical scrolling */
+	            min-height: 100vh;
+    	    }
+
+		    input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+            #textInput input {
+                width: 75%;
+            }
+        
+           	input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+    	    .label-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 10px;
+	            font-weight: bold;
+    	        display: block;
+        	    color: #4a5568; /* text-gray-700 */
+            	margin-bottom: 0.25rem; /* mb-1 */
+	        }
+
+    	    .select-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 10px;
+	            font-weight: bold;
+    	        line-height: 1em;
+        	}
+
+	        .input-string {
+    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
+        	    font-size: 10px;
+            	font-weight: bold;
+            	line-height: 1em;
+        	}
+
+        	#bodyContainer {
+    	        width: 95%; /* Adjust this value as needed */
+        	}
+        
+        	.input-field {
+            	width: 75%;
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
+    	        appearance: none;
+        	    border-width: 1px; /* border */
+            	border-radius: 0.25rem; /* rounded */
+	            padding-top: 0.25rem; /* py-1 */
+    	        padding-bottom: 0.25rem; /* py-1 */
+        	    padding-left: 0.75rem; /* px-3 */
+            	padding-right: 0.75rem; /* px-3 */
+	            color: #4a5568; /* text-gray-700 */
+    	        line-height: 1.25; /* leading-tight */
+        	    outline: 2px solid transparent; /* focus:outline-none */
+            	outline-offset: 2px;
+	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
+    	    }
+
+	        .options {
+    	        border-radius: 0.375rem; /* rounded-md */
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    	        border-color: #d2d6dc; /* border-gray-300 */
+        	    border-width: 1px; /* border */
+	            outline: 2px solid transparent; /* focus:outline-none */
+    	        outline-offset: 2px;
+        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
+            	border-color: #a5b4fc; /* focus:border-indigo-300 */
+	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
+    	        width: 100%; /* w-full */
+        	}
+
+	        .container {
+    	        margin: 0 auto;
+        	    padding: 0 1rem;
+	        }
+
+    	    .flex {
+        	    display: flex;
+        	}
+
+	        .flex-wrap {
+    	        flex-wrap: wrap;
+        	}
+
+	        .justify-center {
+	            justify-content: center;
+    	    }
+
+	        .border {
+    	        border-width: 1px;
+        	}
+
+	        .rounded-lg {
+    	        border-radius: 0.5rem;
+        	}
+
+	        .bg-white {
+    	        background-color: #fff;
+        	}
+
+	        .shadow-md {
+    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        	}
+
+	        .w-4/5 {
+    	        width: 80%;
+        	}
+
+	        .mt-4 {
+    	        margin-top: 1rem;
+        	}
+
+	        .mb-3 {
+    	        margin-bottom: 0.75rem;
+        	}
+
+	        .text-center {
+    	        text-align: center;
+        	}
+
+	        .w-full {
+    	        width: 100%;
+        	}
+
+	        .mb-4 {
+    	        margin-bottom: 1rem;
+        	}
+
+	        .mr-4 {
+    	        margin-right: 1rem;
+        	}
+
+	        .ml-4 {
+    	        margin-left: 1rem;
+        	}
+
+	        .grid {
+    	        display: grid;
+        	}
+
+	        .grid-cols-2 {
+    	        grid-template-columns: repeat(5, minmax(0, 1fr));
+        	}
+
+	        .2xl\:grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+	        .xl\:grid-cols-5 {
+    	        grid-template-columns: repeat(5, minmax(0, 1fr));
+        	}
+
+        	.lg\:grid-cols-6 {
+            	grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+        	.md\:grid-cols-6 {
+            	grid-template-columns: repeat(6, minmax(0, 1fr));
+	        }
+
+	        .sm\:grid-cols-4 {
+    	        grid-template-columns: repeat(4, minmax(0, 1fr));
+	        }
+
+    	    .gap-3 {
+	            gap: 0.75rem;
+    	    }
+
+        	.p-2 {
+            	padding: 0.5rem;
+        	}
+
+        	.rounded-md {
+            	border-radius: 0.375rem;
+        	}
+
+        	.shadow-sm {
+            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	        }
+
+    	    .border-gray-300 {
+        	    border-color: #d2d6dc;
+        	}
+
+        	.focus\:border-indigo-300 {
+	            border-color: #a5b4fc;
+    	    }
+
+        	.focus\:ring {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+	        }
+
+    	    .focus\:ring-indigo-200 {
+        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
+        	}
+
+        	.focus\:ring-opacity-50 {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        	}
+
+        	.w-full {
+	            width: 100%;
+    	    }
+    
+			#instructionsLabel {
+				font-family: Consolas, "Liberation Mono", Courier, monospace;
+			    font-size: 11px;
+        		font-weight: bold;
+	        	line-height: 1em;
+			}
+		
+	        #qrcode-output {
+    			max-width: 412px;
+    			max-height: 412px;
+    			margin: 0 auto; /* Center horizontally */
+	    		display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+			}
+
+        /* Tablet Styles */
+        @media (min-width: 768px) {
+        	body {
+            	font-size: 12px;
+	            line-height: 1.1em;
+    	        font-family: "Trebuchet MS", sans-serif;
+        	    color: #000;
+            	display: flex;
+	            flex-direction: column;
+    	        justify-content: center;
+        	    align-items: center;
+            	overflow-y: auto; /* Enable vertical scrolling */
+	            min-height: 100vh;
+    	    }
+
+		    input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+            #textInput input {
+                width: 75%;
+            }
+        
+	        #subWrapperDiv {
+                grid-template-columns: repeat(4, 1fr);
+            	display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+            }
+        
+           	input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+    	    .label-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 10px;
+	            font-weight: bold;
+    	        display: block;
+        	    color: #4a5568; /* text-gray-700 */
+            	margin-bottom: 0.25rem; /* mb-1 */
+	        }
+
+    	    .select-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 10px;
+	            font-weight: bold;
+    	        line-height: 1em;
+        	}
+
+	        .input-string {
+    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
+        	    font-size: 10px;
+            	font-weight: bold;
+            	line-height: 1em;
+        	}
+
+        	#bodyContainer {
+    	        width: 95%; /* Adjust this value as needed */
+        	}
+        
+        	.input-field {
+            	width: 75%;
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
+    	        appearance: none;
+        	    border-width: 1px; /* border */
+            	border-radius: 0.25rem; /* rounded */
+	            padding-top: 0.25rem; /* py-1 */
+    	        padding-bottom: 0.25rem; /* py-1 */
+        	    padding-left: 0.75rem; /* px-3 */
+            	padding-right: 0.75rem; /* px-3 */
+	            color: #4a5568; /* text-gray-700 */
+    	        line-height: 1.25; /* leading-tight */
+        	    outline: 2px solid transparent; /* focus:outline-none */
+            	outline-offset: 2px;
+	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
+    	    }
+
+	        .options {
+    	        border-radius: 0.375rem; /* rounded-md */
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    	        border-color: #d2d6dc; /* border-gray-300 */
+        	    border-width: 1px; /* border */
+	            outline: 2px solid transparent; /* focus:outline-none */
+    	        outline-offset: 2px;
+        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
+            	border-color: #a5b4fc; /* focus:border-indigo-300 */
+	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
+    	        width: 100%; /* w-full */
+        	}
+
+	        .container {
+    	        margin: 0 auto;
+        	    padding: 0 1rem;
+	        }
+
+    	    .flex {
+        	    display: flex;
+        	}
+
+	        .flex-wrap {
+    	        flex-wrap: wrap;
+        	}
+
+	        .justify-center {
+	            justify-content: center;
+    	    }
+
+	        .border {
+    	        border-width: 1px;
+        	}
+
+	        .rounded-lg {
+    	        border-radius: 0.5rem;
+        	}
+
+	        .bg-white {
+    	        background-color: #fff;
+        	}
+
+	        .shadow-md {
+    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        	}
+
+	        .w-4/5 {
+    	        width: 80%;
+        	}
+
+	        .mt-4 {
+    	        margin-top: 1rem;
+        	}
+
+	        .mb-3 {
+    	        margin-bottom: 0.75rem;
+        	}
+
+	        .text-center {
+    	        text-align: center;
+        	}
+
+	        .w-full {
+    	        width: 100%;
+        	}
+
+	        .mb-4 {
+    	        margin-bottom: 1rem;
+        	}
+
+	        .mr-4 {
+    	        margin-right: 1rem;
+        	}
+
+	        .ml-4 {
+    	        margin-left: 1rem;
+        	}
+
+	        .grid {
+    	        display: grid;
+        	}
+
+	        .grid-cols-3 {
+    	        grid-template-columns: repeat(3, minmax(0, 1fr));
+        	}
+
+	        .2xl\:grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+	        .xl\:grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+        	.lg\:grid-cols-6 {
+            	grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+        	.md\:grid-cols-6 {
+            	grid-template-columns: repeat(6, minmax(0, 1fr));
+	        }
+
+	        .sm\:grid-cols-4 {
+    	        grid-template-columns: repeat(4, minmax(0, 1fr));
+	        }
+
+    	    .gap-3 {
+	            gap: 0.75rem;
+    	    }
+
+        	.p-2 {
+            	padding: 0.5rem;
+        	}
+
+        	.rounded-md {
+            	border-radius: 0.375rem;
+        	}
+
+        	.shadow-sm {
+            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	        }
+
+    	    .border-gray-300 {
+        	    border-color: #d2d6dc;
+        	}
+
+        	.focus\:border-indigo-300 {
+	            border-color: #a5b4fc;
+    	    }
+
+        	.focus\:ring {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+	        }
+
+    	    .focus\:ring-indigo-200 {
+        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
+        	}
+
+        	.focus\:ring-opacity-50 {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        	}
+
+        	.w-full {
+	            width: 100%;
+    	    }
+    
+			#instructionsLabel {
+				font-family: Consolas, "Liberation Mono", Courier, monospace;
+			    font-size: 90%;
+        		font-weight: bold;
+	        	line-height: 1em;
+			}
+		
+	        #qrcode-output {
+    			max-width: 512px;
+    			max-height: 512px;
+    			margin: 0 auto; /* Center horizontally */
+	    		display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+			}
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+        	body {
+            	font-size: 14px;
+	            line-height: 1.1em;
+    	        font-family: "Trebuchet MS", sans-serif;
+        	    color: #000;
+            	display: flex;
+	            flex-direction: column;
+    	        justify-content: center;
+        	    align-items: center;
+            	overflow-y: auto; /* Enable vertical scrolling */
+	            min-height: 100vh;
+    	    }
+
+		    input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+            #textInput input {
+                width: 75%;
+            }
+        
+           	input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+	        #subWrapperDiv {
+                grid-template-columns: repeat(5, 1fr);
+            	display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+            }
+        
+        	.label-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 13px;
+	            font-weight: bold;
+    	        display: block;
+        	    color: #4a5568; /* text-gray-700 */
+            	margin-bottom: 0.25rem; /* mb-1 */
+	        }
+
+    	    .select-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 13px;
+	            font-weight: bold;
+    	        line-height: 1em;
+        	}
+
+	        .input-string {
+    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
+        	    font-size: 10px;
+            	font-weight: bold;
+            	line-height: 1em;
+        	}
+
+        	#bodyContainer {
+    	        width: 95%; /* Adjust this value as needed */
+        	}
+        
+        	.input-field {
+            	width: 75%;
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
+    	        appearance: none;
+        	    border-width: 1px; /* border */
+            	border-radius: 0.25rem; /* rounded */
+	            padding-top: 0.25rem; /* py-1 */
+    	        padding-bottom: 0.25rem; /* py-1 */
+        	    padding-left: 0.75rem; /* px-3 */
+            	padding-right: 0.75rem; /* px-3 */
+	            color: #4a5568; /* text-gray-700 */
+    	        line-height: 1.25; /* leading-tight */
+        	    outline: 2px solid transparent; /* focus:outline-none */
+            	outline-offset: 2px;
+	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
+    	    }
+
+	        .options {
+    	        border-radius: 0.375rem; /* rounded-md */
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    	        border-color: #d2d6dc; /* border-gray-300 */
+        	    border-width: 1px; /* border */
+	            outline: 2px solid transparent; /* focus:outline-none */
+    	        outline-offset: 2px;
+        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
+            	border-color: #a5b4fc; /* focus:border-indigo-300 */
+	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
+    	        width: 100%; /* w-full */
+        	}
+
+	        .container {
+    	        margin: 0 auto;
+        	    padding: 0 1rem;
+	        }
+
+    	    .flex {
+        	    display: flex;
+        	}
+
+	        .flex-wrap {
+    	        flex-wrap: wrap;
+        	}
+
+	        .justify-center {
+	            justify-content: center;
+    	    }
+
+	        .border {
+    	        border-width: 1px;
+        	}
+
+	        .rounded-lg {
+    	        border-radius: 0.5rem;
+        	}
+
+	        .bg-white {
+    	        background-color: #fff;
+        	}
+
+	        .shadow-md {
+    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        	}
+
+	        .w-4/5 {
+    	        width: 80%;
+        	}
+
+	        .mt-4 {
+    	        margin-top: 1rem;
+        	}
+
+	        .mb-3 {
+    	        margin-bottom: 0.75rem;
+        	}
+
+	        .text-center {
+    	        text-align: center;
+        	}
+
+	        .w-full {
+    	        width: 100%;
+        	}
+
+	        .mb-4 {
+    	        margin-bottom: 1rem;
+        	}
+
+	        .mr-4 {
+    	        margin-right: 1rem;
+        	}
+
+	        .ml-4 {
+    	        margin-left: 1rem;
+        	}
+
+	        .grid {
+    	        display: grid;
+        	}
+
+	        .grid-cols-5 {
+    	        grid-template-columns: repeat(5, minmax(0, 1fr));
+        	}
+
+	        .2xl\:grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+	        .xl\:grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+        	.lg\:grid-cols-6 {
+            	grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+        	.md\:grid-cols-6 {
+            	grid-template-columns: repeat(6, minmax(0, 1fr));
+	        }
+
+	        .sm\:grid-cols-4 {
+    	        grid-template-columns: repeat(4, minmax(0, 1fr));
+	        }
+
+    	    .gap-3 {
+	            gap: 0.75rem;
+    	    }
+
+        	.p-2 {
+            	padding: 0.5rem;
+        	}
+
+        	.rounded-md {
+            	border-radius: 0.375rem;
+        	}
+
+        	.shadow-sm {
+            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	        }
+
+    	    .border-gray-300 {
+        	    border-color: #d2d6dc;
+        	}
+
+        	.focus\:border-indigo-300 {
+	            border-color: #a5b4fc;
+    	    }
+
+        	.focus\:ring {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+	        }
+
+    	    .focus\:ring-indigo-200 {
+        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
+        	}
+
+        	.focus\:ring-opacity-50 {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        	}
+
+        	.w-full {
+	            width: 100%;
+    	    }
+    
+			#instructionsLabel {
+				font-family: Consolas, "Liberation Mono", Courier, monospace;
+			    font-size: 14px;
+        		font-weight: bold;
+	        	line-height: 1em;
+			}
+		
+	        #qrcode-output {
+    			max-width: 812px;
+    			max-height: 812px;
+    			margin: 0 auto; /* Center horizontally */
+	    		display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+			}
+        }
+
+        /* Larger Desktop Styles */
+        @media (min-width: 1280px) {
+	         body {
+            	font-size: 14px;
+	            line-height: 1.1em;
+    	        font-family: "Trebuchet MS", sans-serif;
+        	    color: #000;
+            	display: flex;
+	            flex-direction: column;
+    	        justify-content: center;
+        	    align-items: center;
+            	overflow-y: auto; /* Enable vertical scrolling */
+	            min-height: 100vh;
+    	    }
+
+		    input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+            #textInput input {
+                width: 75%;
+            }
+        
+           	input:focus,
+        	textarea:focus,
+	        select:focus {
+    	        border: 1px solid #ccc;
+	        }
+	
+    	    .label-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 13px;
+	            font-weight: bold;
+    	        display: block;
+        	    color: #4a5568; /* text-gray-700 */
+            	margin-bottom: 0.25rem; /* mb-1 */
+	        }
+
+    	    .select-block {
+        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
+            	font-size: 13px;
+	            font-weight: bold;
+    	        line-height: 1em;
+        	}
+
+	        .input-string {
+    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
+        	    font-size: 10px;
+            	font-weight: bold;
+            	line-height: 1em;
+        	}
+
+   	        #subWrapperDiv {
+                grid-template-columns: repeat(6, 1fr);
+            	display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+            }
+        
+        	#bodyContainer {
+    	        width: 95%; /* Adjust this value as needed */
+        	}
+        
+        	.input-field {
+            	width: 75%;
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
+    	        appearance: none;
+        	    border-width: 1px; /* border */
+            	border-radius: 0.25rem; /* rounded */
+	            padding-top: 0.25rem; /* py-1 */
+    	        padding-bottom: 0.25rem; /* py-1 */
+        	    padding-left: 0.75rem; /* px-3 */
+            	padding-right: 0.75rem; /* px-3 */
+	            color: #4a5568; /* text-gray-700 */
+    	        line-height: 1.25; /* leading-tight */
+        	    outline: 2px solid transparent; /* focus:outline-none */
+            	outline-offset: 2px;
+	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
+    	    }
+
+	        .options {
+    	        border-radius: 0.375rem; /* rounded-md */
+	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    	        border-color: #d2d6dc; /* border-gray-300 */
+        	    border-width: 1px; /* border */
+	            outline: 2px solid transparent; /* focus:outline-none */
+    	        outline-offset: 2px;
+        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
+            	border-color: #a5b4fc; /* focus:border-indigo-300 */
+	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
+    	        width: 100%; /* w-full */
+        	}
+
+	        .container {
+    	        margin: 0 auto;
+        	    padding: 0 1rem;
+	        }
+
+    	    .flex {
+        	    display: flex;
+        	}
+
+	        .flex-wrap {
+    	        flex-wrap: wrap;
+        	}
+
+	        .justify-center {
+	            justify-content: center;
+    	    }
+
+	        .border {
+    	        border-width: 1px;
+        	}
+
+	        .rounded-lg {
+    	        border-radius: 0.5rem;
+        	}
+
+	        .bg-white {
+    	        background-color: #fff;
+        	}
+
+	        .shadow-md {
+    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        	}
+
+	        .w-4/5 {
+    	        width: 80%;
+        	}
+
+	        .mt-4 {
+    	        margin-top: 1rem;
+        	}
+
+	        .mb-3 {
+    	        margin-bottom: 0.75rem;
+        	}
+
+	        .text-center {
+    	        text-align: center;
+        	}
+
+	        .w-full {
+    	        width: 100%;
+        	}
+
+	        .mb-4 {
+    	        margin-bottom: 1rem;
+        	}
+
+	        .mr-4 {
+    	        margin-right: 1rem;
+        	}
+
+	        .ml-4 {
+    	        margin-left: 1rem;
+        	}
+
+	        .grid {
+    	        display: grid;
+        	}
+
+	        .grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+	        .2xl\:grid-cols-6 {
+    	        grid-template-columns: repeat(6, minmax(0, 1fr));
+        	}
+
+	        .xl\:grid-cols-5 {
+    	        grid-template-columns: repeat(5, minmax(0, 1fr));
+        	}
+
+        	.lg\:grid-cols-4 {
+            	grid-template-columns: repeat(4, minmax(0, 1fr));
+        	}
+
+        	.md\:grid-cols-4 {
+            	grid-template-columns: repeat(4, minmax(0, 1fr));
+	        }
+
+	        .sm\:grid-cols-3 {
+    	        grid-template-columns: repeat(3, minmax(0, 1fr));
+	        }
+
+    	    .gap-3 {
+	            gap: 0.75rem;
+    	    }
+
+        	.p-2 {
+            	padding: 0.5rem;
+        	}
+
+        	.rounded-md {
+            	border-radius: 0.375rem;
+        	}
+
+        	.shadow-sm {
+            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	        }
+
+    	    .border-gray-300 {
+        	    border-color: #d2d6dc;
+        	}
+
+        	.focus\:border-indigo-300 {
+	            border-color: #a5b4fc;
+    	    }
+
+        	.focus\:ring {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+	        }
+
+    	    .focus\:ring-indigo-200 {
+        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
+        	}
+
+        	.focus\:ring-opacity-50 {
+            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        	}
+
+        	.w-full {
+	            width: 100%;
+    	    }
+    
+			#instructionsLabel {
+				font-family: Consolas, "Liberation Mono", Courier, monospace;
+			    font-size: 14px;
+        		font-weight: bold;
+	        	line-height: 1em;
+			}
+		
+	        #qrcode-output {
+    			max-width: 812px;
+    			max-height: 812px;
+    			margin: 0 auto; /* Center horizontally */
+	    		display: flex;   /* Enable flexbox */
+    			justify-content: center; /* Center content horizontally */
+    			align-items: center;    /* Center content vertically */
+			}
+    }
+    </style>
+</head>
+<body class="bg-gray-100">
+ <div id="activityHolder"></div> 
+<div id="bodyContainer" class="container flex flex-wrap justify-center border rounded-lg bg-white shadow-md w-4/5">
+	<form id="qrcode-settings" action="qr.php"> 
+   		<div id="textInput" class="text-input-div justify-center mt-4 mb-3 text-center w-full">
+		    <input type="text" name="inputstring" id="inputstring" autocomplete="off" spellcheck="false" class="shadow appearance-none border rounded w-3/4 py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="QR Code Text Goes Here">
+		</div>
+		<div id="wrapperDiv" class="wrapper-div flex flex-wrap justify-center mb-4 mr-4 ml-4 text-center">
+			<div id="subWrapperDiv" class="options-div p-4 border rounded-lg bg-white shadow-md grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-3 mb-4 p-2 w-full">
+			    <div id="maskPatternDiv" class="sub-container px-1 mb-.5"> 
+	    		    <label id="maskpatternLabel" for="maskpattern" class="label-block block">Mask Pattern</label>
+	        		<select id="maskpattern" name="maskpattern" class="select-block options">
+	                    <option value="-1" selected="selected">-1</option>
+    	                <option value="0">0</option>
+        	            <option value="1">1</option>
+            	        <option value="2">2</option>
+                	    <option value="3">3</option>
+                    	<option value="4">4</option>
+                    	<option value="5">5</option>
+                    	<option value="6">6</option>
+	                    <option value="7">7</option>
+    	            </select>
+        	    </div>
+		 	 	<div id="quietZoneSizeDiv" class="sub-container px-1 mb-.5">
+    		    	<label for="quietzonesize" class="label-block block">QR Border Size</label>
+	        		<select id="quietzonesize" name="quietzonesize" class="select-block options">
+            	        <option value="0">0</option>
+                	    <option value="5" selected="selected">5</option>
+                    	<option value="10">10</option>
+                    	<option value="15">15</option>
+                    	<option value="20">20</option>
+	                    <option value="25">25</option>
+    	                <option value="30">30</option>
+        	        </select>
+            	</div>
+				<div id="outputTypeDiv" class="sub-container px-1 mb-.5">
+					<label id="outputTypeLabel" for="output_type" class="label-block block text-gray-700 mb-1">QR Image Format</label>
+					<select id="outputTypeSelect" class="select-block options" id="output_type" name="output_type">
+						<option value="png" selected="selected">Image - png</option>
+						<option value="jpg">Image - jpg</option>
+						<option value="gif">Image - gif</option>
+					</select>
+				</div>
+				<div id="scaleDiv" class="sub-container px-1">
+					<label id="scaleLabel" for="scale" class="label-block block text-gray-700 mb-1">QR Image Size</label>
+					<select id="scale" name="scale" class="select-block options">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5" selected="selected">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+					</select>
+				</div>
+			</div>
+			<div id="instructionsDiv" class="text-container mb-2 p-1">
+				<label id="instructionsLabel" class="label-block block text-green-700">The Elements Below Adjust The Various Sections of the QR Codes Colors.  By Default Everything Is Black.  You Do Not Have To Change A Color If You DO NOT Want To.</label>
+			</div>
+			<div id="csWrapperDiv" class="p-2 mb-1 mr-2 ml-2 border rounded-lg bg-white shadow-md w-full">
+				<div id="colorSelectContainterDiv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-3 mb-1 text-center">
+					<div id="finderDarkDiv" class="selector-div">
+						<label id="finderDarkLabel" for="m_finder_dark" class="label-block block">Square Brdr</label>
+						<select id="m_finder_dark" name="m_finder_dark" class="select-block options">
+							<option value="000000" selected>Black</option>
+							<option value="ffffff">White</option>
+							<option value="ff0000">Red</option>
+							<option value="00ff00">Green</option>
+							<option value="0000ff">Blue</option>
+							<option value="ffff00">Yellow</option>
+							<option value="800080">Purple</option>
+							<option value="ffa500">Orange</option>
+							<option value="008000">Dark Green</option>
+							<option value="a52a2a">Brown</option>
+							<option value="808080">Gray</option>
+							<option value="00ffff">Cyan</option>
+						</select>
+					</div>
+					<div id="finderDarkDotDiv" class="selector-div">
+						<label id="finderDotLabel" for="m_finder_dot_dark" class="label-block block">Square Cntr</label>
+						<select id="m_finder_dot_dark" name="m_finder_dot_dark" class="select-block options">
+							<option value="000000" selected>Black</option>
+							<option value="ffffff">White</option>
+							<option value="ff0000">Red</option>
+							<option value="00ff00">Green</option>
+							<option value="0000ff">Blue</option>
+							<option value="ffff00">Yellow</option>
+							<option value="800080">Purple</option>
+							<option value="ffa500">Orange</option>
+							<option value="008000">Dark Green</option>
+							<option value="a52a2a">Brown</option>
+							<option value="808080">Gray</option>
+							<option value="00ffff">Cyan</option>
+						</select>
+					</div>
+					<div id="alignmentDarkDiv" class="selector-div">
+						<label id="alignmentDarkLabel" for="m_alignment_dark" class="label-block block">Square Small</label>
+						<select id="m_alignment_dark" name="m_alignment_dark" class="select-block options">
+							<option value="000000" selected>Black</option>
+							<option value="ff0000">Red</option>
+							<option value="00ff00">Green</option>
+							<option value="0000ff">Blue</option>
+							<option value="ffff00">Yellow</option>
+							<option value="800080">Purple</option>
+							<option value="ffa500">Orange</option>
+							<option value="008000">Dark Green</option>
+							<option value="a52a2a">Brown</option>
+							<option value="808080">Gray</option>
+							<option value="00ffff">Cyan</option>
+						</select>
+					</div>
+					<div id="dataLightDiv" class="selector-div">
+						<label id="dataLightLabel" for="m_data_light" class="label-block block">QR Fill (Light)</label>
+						<select id="m_data_light" name="m_data_light" class="select-block options">
+							<option value="ffffff" selected>White</option>
+							<option value="000000">Black</option>
+							<option value="ff0000">Red</option>
+							<option value="00ff00">Green</option>
+							<option value="0000ff">Blue</option>
+							<option value="ffff00">Yellow</option>
+							<option value="800080">Purple</option>
+							<option value="ffa500">Orange</option>
+							<option value="008000">Dark Green</option>
+							<option value="a52a2a">Brown</option>
+							<option value="808080">Gray</option>
+							<option value="00ffff">Cyan</option>
+						</select>
+					</div>
+					<div id="dataDarkDiv" class="selector-div">
+						<label id="dataDarkLabel" for="m_data_dark" class="label-block">QR Fill (Dark)</label>
+						<select id="m_data_dark" name="m_data_dark" class="select-block options">
+							<option value="000000" selected>Black</option>
+							<option value="ff0000">Red</option>
+							<option value="00ff00">Green</option>
+							<option value="0000ff">Blue</option>
+							<option value="ffff00">Yellow</option>
+							<option value="800080">Purple</option>
+							<option value="ffa500">Orange</option>
+							<option value="008000">Dark Green</option>
+							<option value="a52a2a">Brown</option>
+							<option value="808080">Gray</option>
+							<option value="00ffff">Cyan</option>
+						</select>
+					</div>
+					<div id="quietZoneLightDiv" class="selector-div">
+						<label id="quietZoneLightLabel" for="m_quietzone_light" class="label-block block">QR Border</label>
+						<select id="m_quietzone_light" name="m_quietzone_light" class="select-block options">
+							<option value="ffffff" selected>White</option>
+							<option value="000000">Black</option>
+							<option value="ff0000">Red</option>
+							<option value="00ff00">Green</option>
+							<option value="0000ff">Blue</option>
+							<option value="ffff00">Yellow</option>
+							<option value="800080">Purple</option>
+							<option value="ffa500">Orange</option>
+							<option value="008000">Dark Green</option>
+							<option value="a52a2a">Brown</option>
+							<option value="808080">Gray</option>
+							<option value="00ffff">Cyan</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+    <div id="qrcode-output" class="mt-6 mb-6"></div>
+<div id="buttonsDiv" class="flex justify-center mb-2">
+    <button id="formSubmitButton" type="submit" class="submit-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        Generate QR Code
+    </button>
+    <a id="downloadButton" class="hidden download-button bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2">
+        Download QR Code
+    </a>
+</div>
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.1.1/jscolor.js"></script>
+<script>
+$(document).ready(function() {
+    const form = $('#qrcode-settings');
+    const output = $('#qrcode-output');
+    const downloadButton = $('#downloadButton');
+    const activityHolder = $('#activityHolder'); 
+
+    form.on('submit', handleSubmit);
+
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function(response) {
+                const qrCodeImg = new Image();
+                qrCodeImg.src = response.qrcode;
+
+                output.html(response.qrcode);
+                output[0].scrollIntoView({ behavior: 'smooth' });
+                activityHolder.html(''); 
+
+                const imageBlob = base64ToBlob(response.imageData, 'image/png');
+                const url = URL.createObjectURL(imageBlob);
+
+                // Set the download link and make the button visible
+                downloadButton.attr('href', url)
+                              .attr('download', `qrcode_${Math.random().toString(36).substring(2)}.png`)
+                              .removeClass('hidden');
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON || {};
+                output.html(response.error || 'An error occurred');
+                activityHolder.html(''); 
+            }
+        });
+    }
+
+		function base64ToBlob(base64, type) {
+    		const byteCharacters = atob(base64.split(',')[1]);
+    		const byteArrays = [];
+	
+    		for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+		        const slice = byteCharacters.slice(offset, offset + 1024);
+
+        		const byteNumbers = new Array(slice.length);
+        		for (let i = 0; i < slice.length; i++) {
+            		byteNumbers[i] = slice.charCodeAt(i);
+        		}
+
+        		const byteArray = new Uint8Array(byteNumbers);
+
+        		byteArrays.push(byteArray);
+    		}
+
+    		return new Blob(byteArrays, { type });
+		}
+    });
+</script>
+</body>
+</html>
