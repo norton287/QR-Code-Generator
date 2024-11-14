@@ -1,6 +1,8 @@
 # QR Code Generator
 - This QR Code generator is a web-based tool that allows users to create custom QR codes. It offers a variety of customization options, including the ability to change the colors of different QR code elements, adjust the mask pattern, border size, image format, and image size.
 
+Demo here:  https://qr.shrt.ninja
+
 ## Features
 - Customizable Colors: Change the colors of the QR code's finder, alignment patterns, data modules, and quiet zone.
 - Mask Pattern Selection: Choose from different mask patterns to optimize the QR code's appearance and readability.
