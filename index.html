@@ -1,1232 +1,1105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
- 	<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-    <meta http-equiv="Expires" content="Sat, 01 Jan 2000 00:00:00 GMT">
-    <meta http-equiv="Pragma" content="no-cache">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
-    <title>QR Code Generator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            	font-size: 10px;
-	            line-height: 1.1em;
-    	        font-family: "Trebuchet MS", sans-serif;
-        	    color: #000;
-            	display: flex;
-	            flex-direction: column;
-    	        justify-content: center;
-        	    align-items: center;
-            	overflow-y: auto; /* Enable vertical scrolling */
-	            min-height: 100vh;
-    	    }
-
-		    input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-            #textInput input {
-                width: 75%;
-            }
-        
-           	input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-    	    .label-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 10px;
-	            font-weight: bold;
-    	        display: block;
-        	    color: #4a5568; /* text-gray-700 */
-            	margin-bottom: 0.25rem; /* mb-1 */
-	        }
-
-    	    .select-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 10px;
-	            font-weight: bold;
-    	        line-height: 1em;
-        	}
-
-	        .input-string {
-    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
-        	    font-size: 10px;
-            	font-weight: bold;
-            	line-height: 1em;
-        	}
-
-        	#bodyContainer {
-    	        width: 95%; /* Adjust this value as needed */
-        	}
-        
-        	.input-field {
-            	width: 75%;
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
-    	        appearance: none;
-        	    border-width: 1px; /* border */
-            	border-radius: 0.25rem; /* rounded */
-	            padding-top: 0.25rem; /* py-1 */
-    	        padding-bottom: 0.25rem; /* py-1 */
-        	    padding-left: 0.75rem; /* px-3 */
-            	padding-right: 0.75rem; /* px-3 */
-	            color: #4a5568; /* text-gray-700 */
-    	        line-height: 1.25; /* leading-tight */
-        	    outline: 2px solid transparent; /* focus:outline-none */
-            	outline-offset: 2px;
-	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
-    	    }
-
-	        .options {
-    	        border-radius: 0.375rem; /* rounded-md */
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    	        border-color: #d2d6dc; /* border-gray-300 */
-        	    border-width: 1px; /* border */
-	            outline: 2px solid transparent; /* focus:outline-none */
-    	        outline-offset: 2px;
-        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
-            	border-color: #a5b4fc; /* focus:border-indigo-300 */
-	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
-    	        width: 100%; /* w-full */
-        	}
-
-	        .container {
-    	        margin: 0 auto;
-        	    padding: 0 1rem;
-	        }
-
-    	    .flex {
-        	    display: flex;
-        	}
-
-	        .flex-wrap {
-    	        flex-wrap: wrap;
-        	}
-
-	        .justify-center {
-	            justify-content: center;
-    	    }
-
-	        .border {
-    	        border-width: 1px;
-        	}
-
-	        .rounded-lg {
-    	        border-radius: 0.5rem;
-        	}
-
-	        .bg-white {
-    	        background-color: #fff;
-        	}
-
-	        .shadow-md {
-    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        	}
-
-	        .w-4/5 {
-    	        width: 80%;
-        	}
-
-	        .mt-4 {
-    	        margin-top: 1rem;
-        	}
-
-	        .mb-3 {
-    	        margin-bottom: 0.75rem;
-        	}
-
-	        .text-center {
-    	        text-align: center;
-        	}
-
-	        .w-full {
-    	        width: 100%;
-        	}
-
-	        .mb-4 {
-    	        margin-bottom: 1rem;
-        	}
-
-	        .mr-4 {
-    	        margin-right: 1rem;
-        	}
-
-	        .ml-4 {
-    	        margin-left: 1rem;
-        	}
-
-	        .grid {
-    	        display: grid;
-        	}
-
-	        .grid-cols-2 {
-    	        grid-template-columns: repeat(5, minmax(0, 1fr));
-        	}
-
-	        .2xl\:grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-	        .xl\:grid-cols-5 {
-    	        grid-template-columns: repeat(5, minmax(0, 1fr));
-        	}
-
-        	.lg\:grid-cols-6 {
-            	grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-        	.md\:grid-cols-6 {
-            	grid-template-columns: repeat(6, minmax(0, 1fr));
-	        }
-
-	        .sm\:grid-cols-4 {
-    	        grid-template-columns: repeat(4, minmax(0, 1fr));
-	        }
-
-    	    .gap-3 {
-	            gap: 0.75rem;
-    	    }
-
-        	.p-2 {
-            	padding: 0.5rem;
-        	}
-
-        	.rounded-md {
-            	border-radius: 0.375rem;
-        	}
-
-        	.shadow-sm {
-            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	        }
-
-    	    .border-gray-300 {
-        	    border-color: #d2d6dc;
-        	}
-
-        	.focus\:border-indigo-300 {
-	            border-color: #a5b4fc;
-    	    }
-
-        	.focus\:ring {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-	        }
-
-    	    .focus\:ring-indigo-200 {
-        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
-        	}
-
-        	.focus\:ring-opacity-50 {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-        	}
-
-        	.w-full {
-	            width: 100%;
-    	    }
-    
-			#instructionsLabel {
-				font-family: Consolas, "Liberation Mono", Courier, monospace;
-			    font-size: 11px;
-        		font-weight: bold;
-	        	line-height: 1em;
-			}
-		
-	        #qrcode-output {
-    			max-width: 412px;
-    			max-height: 412px;
-    			margin: 0 auto; /* Center horizontally */
-	    		display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-			}
-
-        /* Tablet Styles */
-        @media (min-width: 768px) {
-        	body {
-            	font-size: 12px;
-	            line-height: 1.1em;
-    	        font-family: "Trebuchet MS", sans-serif;
-        	    color: #000;
-            	display: flex;
-	            flex-direction: column;
-    	        justify-content: center;
-        	    align-items: center;
-            	overflow-y: auto; /* Enable vertical scrolling */
-	            min-height: 100vh;
-    	    }
-
-		    input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-            #textInput input {
-                width: 75%;
-            }
-        
-	        #subWrapperDiv {
-                grid-template-columns: repeat(4, 1fr);
-            	display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-            }
-        
-           	input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-    	    .label-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 10px;
-	            font-weight: bold;
-    	        display: block;
-        	    color: #4a5568; /* text-gray-700 */
-            	margin-bottom: 0.25rem; /* mb-1 */
-	        }
-
-    	    .select-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 10px;
-	            font-weight: bold;
-    	        line-height: 1em;
-        	}
-
-	        .input-string {
-    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
-        	    font-size: 10px;
-            	font-weight: bold;
-            	line-height: 1em;
-        	}
-
-        	#bodyContainer {
-    	        width: 95%; /* Adjust this value as needed */
-        	}
-        
-        	.input-field {
-            	width: 75%;
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
-    	        appearance: none;
-        	    border-width: 1px; /* border */
-            	border-radius: 0.25rem; /* rounded */
-	            padding-top: 0.25rem; /* py-1 */
-    	        padding-bottom: 0.25rem; /* py-1 */
-        	    padding-left: 0.75rem; /* px-3 */
-            	padding-right: 0.75rem; /* px-3 */
-	            color: #4a5568; /* text-gray-700 */
-    	        line-height: 1.25; /* leading-tight */
-        	    outline: 2px solid transparent; /* focus:outline-none */
-            	outline-offset: 2px;
-	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
-    	    }
-
-	        .options {
-    	        border-radius: 0.375rem; /* rounded-md */
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    	        border-color: #d2d6dc; /* border-gray-300 */
-        	    border-width: 1px; /* border */
-	            outline: 2px solid transparent; /* focus:outline-none */
-    	        outline-offset: 2px;
-        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
-            	border-color: #a5b4fc; /* focus:border-indigo-300 */
-	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
-    	        width: 100%; /* w-full */
-        	}
-
-	        .container {
-    	        margin: 0 auto;
-        	    padding: 0 1rem;
-	        }
-
-    	    .flex {
-        	    display: flex;
-        	}
-
-	        .flex-wrap {
-    	        flex-wrap: wrap;
-        	}
-
-	        .justify-center {
-	            justify-content: center;
-    	    }
-
-	        .border {
-    	        border-width: 1px;
-        	}
-
-	        .rounded-lg {
-    	        border-radius: 0.5rem;
-        	}
-
-	        .bg-white {
-    	        background-color: #fff;
-        	}
-
-	        .shadow-md {
-    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        	}
-
-	        .w-4/5 {
-    	        width: 80%;
-        	}
-
-	        .mt-4 {
-    	        margin-top: 1rem;
-        	}
-
-	        .mb-3 {
-    	        margin-bottom: 0.75rem;
-        	}
-
-	        .text-center {
-    	        text-align: center;
-        	}
-
-	        .w-full {
-    	        width: 100%;
-        	}
-
-	        .mb-4 {
-    	        margin-bottom: 1rem;
-        	}
-
-	        .mr-4 {
-    	        margin-right: 1rem;
-        	}
-
-	        .ml-4 {
-    	        margin-left: 1rem;
-        	}
-
-	        .grid {
-    	        display: grid;
-        	}
-
-	        .grid-cols-3 {
-    	        grid-template-columns: repeat(3, minmax(0, 1fr));
-        	}
-
-	        .2xl\:grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-	        .xl\:grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-        	.lg\:grid-cols-6 {
-            	grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-        	.md\:grid-cols-6 {
-            	grid-template-columns: repeat(6, minmax(0, 1fr));
-	        }
-
-	        .sm\:grid-cols-4 {
-    	        grid-template-columns: repeat(4, minmax(0, 1fr));
-	        }
-
-    	    .gap-3 {
-	            gap: 0.75rem;
-    	    }
-
-        	.p-2 {
-            	padding: 0.5rem;
-        	}
-
-        	.rounded-md {
-            	border-radius: 0.375rem;
-        	}
-
-        	.shadow-sm {
-            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	        }
-
-    	    .border-gray-300 {
-        	    border-color: #d2d6dc;
-        	}
-
-        	.focus\:border-indigo-300 {
-	            border-color: #a5b4fc;
-    	    }
-
-        	.focus\:ring {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-	        }
-
-    	    .focus\:ring-indigo-200 {
-        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
-        	}
-
-        	.focus\:ring-opacity-50 {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-        	}
-
-        	.w-full {
-	            width: 100%;
-    	    }
-    
-			#instructionsLabel {
-				font-family: Consolas, "Liberation Mono", Courier, monospace;
-			    font-size: 90%;
-        		font-weight: bold;
-	        	line-height: 1em;
-			}
-		
-	        #qrcode-output {
-    			max-width: 512px;
-    			max-height: 512px;
-    			margin: 0 auto; /* Center horizontally */
-	    		display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-			}
-        }
-
-        /* Desktop Styles */
-        @media (min-width: 1024px) {
-        	body {
-            	font-size: 14px;
-	            line-height: 1.1em;
-    	        font-family: "Trebuchet MS", sans-serif;
-        	    color: #000;
-            	display: flex;
-	            flex-direction: column;
-    	        justify-content: center;
-        	    align-items: center;
-            	overflow-y: auto; /* Enable vertical scrolling */
-	            min-height: 100vh;
-    	    }
-
-		    input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-            #textInput input {
-                width: 75%;
-            }
-        
-           	input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-	        #subWrapperDiv {
-                grid-template-columns: repeat(5, 1fr);
-            	display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-            }
-        
-        	.label-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 13px;
-	            font-weight: bold;
-    	        display: block;
-        	    color: #4a5568; /* text-gray-700 */
-            	margin-bottom: 0.25rem; /* mb-1 */
-	        }
-
-    	    .select-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 13px;
-	            font-weight: bold;
-    	        line-height: 1em;
-        	}
-
-	        .input-string {
-    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
-        	    font-size: 10px;
-            	font-weight: bold;
-            	line-height: 1em;
-        	}
-
-        	#bodyContainer {
-    	        width: 95%; /* Adjust this value as needed */
-        	}
-        
-        	.input-field {
-            	width: 75%;
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
-    	        appearance: none;
-        	    border-width: 1px; /* border */
-            	border-radius: 0.25rem; /* rounded */
-	            padding-top: 0.25rem; /* py-1 */
-    	        padding-bottom: 0.25rem; /* py-1 */
-        	    padding-left: 0.75rem; /* px-3 */
-            	padding-right: 0.75rem; /* px-3 */
-	            color: #4a5568; /* text-gray-700 */
-    	        line-height: 1.25; /* leading-tight */
-        	    outline: 2px solid transparent; /* focus:outline-none */
-            	outline-offset: 2px;
-	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
-    	    }
-
-	        .options {
-    	        border-radius: 0.375rem; /* rounded-md */
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    	        border-color: #d2d6dc; /* border-gray-300 */
-        	    border-width: 1px; /* border */
-	            outline: 2px solid transparent; /* focus:outline-none */
-    	        outline-offset: 2px;
-        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
-            	border-color: #a5b4fc; /* focus:border-indigo-300 */
-	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
-    	        width: 100%; /* w-full */
-        	}
-
-	        .container {
-    	        margin: 0 auto;
-        	    padding: 0 1rem;
-	        }
-
-    	    .flex {
-        	    display: flex;
-        	}
-
-	        .flex-wrap {
-    	        flex-wrap: wrap;
-        	}
-
-	        .justify-center {
-	            justify-content: center;
-    	    }
-
-	        .border {
-    	        border-width: 1px;
-        	}
-
-	        .rounded-lg {
-    	        border-radius: 0.5rem;
-        	}
-
-	        .bg-white {
-    	        background-color: #fff;
-        	}
-
-	        .shadow-md {
-    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        	}
-
-	        .w-4/5 {
-    	        width: 80%;
-        	}
-
-	        .mt-4 {
-    	        margin-top: 1rem;
-        	}
-
-	        .mb-3 {
-    	        margin-bottom: 0.75rem;
-        	}
-
-	        .text-center {
-    	        text-align: center;
-        	}
-
-	        .w-full {
-    	        width: 100%;
-        	}
-
-	        .mb-4 {
-    	        margin-bottom: 1rem;
-        	}
-
-	        .mr-4 {
-    	        margin-right: 1rem;
-        	}
-
-	        .ml-4 {
-    	        margin-left: 1rem;
-        	}
-
-	        .grid {
-    	        display: grid;
-        	}
-
-	        .grid-cols-5 {
-    	        grid-template-columns: repeat(5, minmax(0, 1fr));
-        	}
-
-	        .2xl\:grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-	        .xl\:grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-        	.lg\:grid-cols-6 {
-            	grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-        	.md\:grid-cols-6 {
-            	grid-template-columns: repeat(6, minmax(0, 1fr));
-	        }
-
-	        .sm\:grid-cols-4 {
-    	        grid-template-columns: repeat(4, minmax(0, 1fr));
-	        }
-
-    	    .gap-3 {
-	            gap: 0.75rem;
-    	    }
-
-        	.p-2 {
-            	padding: 0.5rem;
-        	}
-
-        	.rounded-md {
-            	border-radius: 0.375rem;
-        	}
-
-        	.shadow-sm {
-            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	        }
-
-    	    .border-gray-300 {
-        	    border-color: #d2d6dc;
-        	}
-
-        	.focus\:border-indigo-300 {
-	            border-color: #a5b4fc;
-    	    }
-
-        	.focus\:ring {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-	        }
-
-    	    .focus\:ring-indigo-200 {
-        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
-        	}
-
-        	.focus\:ring-opacity-50 {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-        	}
-
-        	.w-full {
-	            width: 100%;
-    	    }
-    
-			#instructionsLabel {
-				font-family: Consolas, "Liberation Mono", Courier, monospace;
-			    font-size: 14px;
-        		font-weight: bold;
-	        	line-height: 1em;
-			}
-		
-	        #qrcode-output {
-    			max-width: 812px;
-    			max-height: 812px;
-    			margin: 0 auto; /* Center horizontally */
-	    		display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-			}
-        }
-
-        /* Larger Desktop Styles */
-        @media (min-width: 1280px) {
-	         body {
-            	font-size: 14px;
-	            line-height: 1.1em;
-    	        font-family: "Trebuchet MS", sans-serif;
-        	    color: #000;
-            	display: flex;
-	            flex-direction: column;
-    	        justify-content: center;
-        	    align-items: center;
-            	overflow-y: auto; /* Enable vertical scrolling */
-	            min-height: 100vh;
-    	    }
-
-		    input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-            #textInput input {
-                width: 75%;
-            }
-        
-           	input:focus,
-        	textarea:focus,
-	        select:focus {
-    	        border: 1px solid #ccc;
-	        }
-	
-    	    .label-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 13px;
-	            font-weight: bold;
-    	        display: block;
-        	    color: #4a5568; /* text-gray-700 */
-            	margin-bottom: 0.25rem; /* mb-1 */
-	        }
-
-    	    .select-block {
-        	    font-family: Consolas, "Liberation Mono", Courier, monospace;
-            	font-size: 13px;
-	            font-weight: bold;
-    	        line-height: 1em;
-        	}
-
-	        .input-string {
-    	        font-family: Consolas, "Liberation Mono", Courier, monospace;
-        	    font-size: 10px;
-            	font-weight: bold;
-            	line-height: 1em;
-        	}
-
-   	        #subWrapperDiv {
-                grid-template-columns: repeat(6, 1fr);
-            	display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-            }
-        
-        	#bodyContainer {
-    	        width: 95%; /* Adjust this value as needed */
-        	}
-        
-        	.input-field {
-            	width: 75%;
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow */
-    	        appearance: none;
-        	    border-width: 1px; /* border */
-            	border-radius: 0.25rem; /* rounded */
-	            padding-top: 0.25rem; /* py-1 */
-    	        padding-bottom: 0.25rem; /* py-1 */
-        	    padding-left: 0.75rem; /* px-3 */
-            	padding-right: 0.75rem; /* px-3 */
-	            color: #4a5568; /* text-gray-700 */
-    	        line-height: 1.25; /* leading-tight */
-        	    outline: 2px solid transparent; /* focus:outline-none */
-            	outline-offset: 2px;
-	            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:shadow-outline */
-    	    }
-
-	        .options {
-    	        border-radius: 0.375rem; /* rounded-md */
-	            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    	        border-color: #d2d6dc; /* border-gray-300 */
-        	    border-width: 1px; /* border */
-	            outline: 2px solid transparent; /* focus:outline-none */
-    	        outline-offset: 2px;
-        	    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-opacity-50 */
-            	border-color: #a5b4fc; /* focus:border-indigo-300 */
-	            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* focus:ring-indigo-200 */
-    	        width: 100%; /* w-full */
-        	}
-
-	        .container {
-    	        margin: 0 auto;
-        	    padding: 0 1rem;
-	        }
-
-    	    .flex {
-        	    display: flex;
-        	}
-
-	        .flex-wrap {
-    	        flex-wrap: wrap;
-        	}
-
-	        .justify-center {
-	            justify-content: center;
-    	    }
-
-	        .border {
-    	        border-width: 1px;
-        	}
-
-	        .rounded-lg {
-    	        border-radius: 0.5rem;
-        	}
-
-	        .bg-white {
-    	        background-color: #fff;
-        	}
-
-	        .shadow-md {
-    	        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        	}
-
-	        .w-4/5 {
-    	        width: 80%;
-        	}
-
-	        .mt-4 {
-    	        margin-top: 1rem;
-        	}
-
-	        .mb-3 {
-    	        margin-bottom: 0.75rem;
-        	}
-
-	        .text-center {
-    	        text-align: center;
-        	}
-
-	        .w-full {
-    	        width: 100%;
-        	}
-
-	        .mb-4 {
-    	        margin-bottom: 1rem;
-        	}
-
-	        .mr-4 {
-    	        margin-right: 1rem;
-        	}
-
-	        .ml-4 {
-    	        margin-left: 1rem;
-        	}
-
-	        .grid {
-    	        display: grid;
-        	}
-
-	        .grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-	        .2xl\:grid-cols-6 {
-    	        grid-template-columns: repeat(6, minmax(0, 1fr));
-        	}
-
-	        .xl\:grid-cols-5 {
-    	        grid-template-columns: repeat(5, minmax(0, 1fr));
-        	}
-
-        	.lg\:grid-cols-4 {
-            	grid-template-columns: repeat(4, minmax(0, 1fr));
-        	}
-
-        	.md\:grid-cols-4 {
-            	grid-template-columns: repeat(4, minmax(0, 1fr));
-	        }
-
-	        .sm\:grid-cols-3 {
-    	        grid-template-columns: repeat(3, minmax(0, 1fr));
-	        }
-
-    	    .gap-3 {
-	            gap: 0.75rem;
-    	    }
-
-        	.p-2 {
-            	padding: 0.5rem;
-        	}
-
-        	.rounded-md {
-            	border-radius: 0.375rem;
-        	}
-
-        	.shadow-sm {
-            	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	        }
-
-    	    .border-gray-300 {
-        	    border-color: #d2d6dc;
-        	}
-
-        	.focus\:border-indigo-300 {
-	            border-color: #a5b4fc;
-    	    }
-
-        	.focus\:ring {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-	        }
-
-    	    .focus\:ring-indigo-200 {
-        	    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
-        	}
-
-        	.focus\:ring-opacity-50 {
-            	box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-        	}
-
-        	.w-full {
-	            width: 100%;
-    	    }
-    
-			#instructionsLabel {
-				font-family: Consolas, "Liberation Mono", Courier, monospace;
-			    font-size: 14px;
-        		font-weight: bold;
-	        	line-height: 1em;
-			}
-		
-	        #qrcode-output {
-    			max-width: 812px;
-    			max-height: 812px;
-    			margin: 0 auto; /* Center horizontally */
-	    		display: flex;   /* Enable flexbox */
-    			justify-content: center; /* Center content horizontally */
-    			align-items: center;    /* Center content vertically */
-			}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator</title>
+
+  <!-- Analytics -->
+  <script defer src="https://umami.spindlecrank.com/script.js" data-website-id="a78072de-2339-4746-8b89-22ccd2d1858e"></script>
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6366f1">
+  <meta name="msapplication-TileColor" content="#6366f1">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- Cache control -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="Sat, 01 Jan 2000 00:00:00 GMT">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Theme variables ──────────────────────────────────────────────────── */
+    :root {
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --transition: 0.2s ease;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
-    </style>
+
+    [data-theme="dark"] {
+      --bg:           #0f172a;
+      --surface:      #1e293b;
+      --surface-2:    #263347;
+      --border:       #334155;
+      --border-hover: #475569;
+      --text:         #f1f5f9;
+      --text-muted:   #94a3b8;
+      --text-dim:     #64748b;
+      --accent:       #6366f1;
+      --accent-hover: #818cf8;
+      --accent-dim:   rgba(99,102,241,0.15);
+      --success:      #10b981;
+      --success-dim:  rgba(16,185,129,0.15);
+      --error:        #f87171;
+      --error-dim:    rgba(248,113,113,0.15);
+      --warn:         #fbbf24;
+      --shadow-sm:    0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md:    0 4px 16px rgba(0,0,0,0.5);
+      --shadow-lg:    0 8px 32px rgba(0,0,0,0.6);
+      --input-bg:     #0f172a;
+      --header-bg:    rgba(15,23,42,0.9);
+    }
+
+    [data-theme="light"] {
+      --bg:           #f0f4f8;
+      --surface:      #ffffff;
+      --surface-2:    #f8fafc;
+      --border:       #e2e8f0;
+      --border-hover: #cbd5e1;
+      --text:         #1e293b;
+      --text-muted:   #475569;
+      --text-dim:     #94a3b8;
+      --accent:       #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-dim:   rgba(79,70,229,0.1);
+      --success:      #059669;
+      --success-dim:  rgba(5,150,105,0.1);
+      --error:        #dc2626;
+      --error-dim:    rgba(220,38,38,0.1);
+      --warn:         #d97706;
+      --shadow-sm:    0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md:    0 4px 16px rgba(0,0,0,0.1);
+      --shadow-lg:    0 8px 32px rgba(0,0,0,0.12);
+      --input-bg:     #f8fafc;
+      --header-bg:    rgba(255,255,255,0.9);
+    }
+
+    /* ── Reset ────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: background var(--transition), color var(--transition);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Scrollbar ────────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+    /* ── Loading overlay ─────────────────────────────────────────────────── */
+    #loading-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    #loading-overlay.active { opacity: 1; pointer-events: all; }
+
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .spinner-label { color: var(--text-muted); font-size: 13px; letter-spacing: 0.5px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Toasts ───────────────────────────────────────────────────────────── */
+    #toast-container {
+      position: fixed; bottom: 24px; right: 24px;
+      z-index: 10000; display: flex; flex-direction: column; gap: 10px;
+      max-width: 360px; width: calc(100vw - 48px);
+    }
+
+    .toast {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 16px; border-radius: var(--radius-md);
+      background: var(--surface); border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      animation: toast-in 0.25s ease;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .toast.removing { opacity: 0; transform: translateX(16px); }
+    .toast-icon { flex-shrink: 0; margin-top: 1px; width: 16px; height: 16px; }
+    .toast-body { flex: 1; min-width: 0; }
+    .toast-title { font-size: 13px; font-weight: 600; }
+    .toast-msg   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .toast.success .toast-icon { color: var(--success); }
+    .toast.error   .toast-icon { color: var(--error); }
+    .toast.info    .toast-icon { color: var(--accent); }
+    .toast-close {
+      flex-shrink: 0; background: none; border: none; cursor: pointer;
+      color: var(--text-dim); padding: 2px; border-radius: 4px;
+      line-height: 1; font-size: 14px; transition: color var(--transition);
+    }
+    .toast-close:hover { color: var(--text); }
+    @keyframes toast-in { from { opacity: 0; transform: translateX(16px); } }
+
+    /* ── Header ──────────────────────────────────────────────────────────── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-icon svg { width: 18px; height: 18px; color: #fff; }
+    .logo-title { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+    .logo-badge {
+      font-size: 10px; font-weight: 600; padding: 2px 7px;
+      background: var(--accent-dim); color: var(--accent);
+      border: 1px solid var(--accent); border-radius: 99px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Theme toggle */
+    #theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: var(--radius-sm);
+      background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--text-muted); cursor: pointer; font-size: 13px;
+      font-family: var(--font); font-weight: 500;
+      transition: all var(--transition);
+    }
+    #theme-toggle:hover {
+      background: var(--surface); border-color: var(--border-hover);
+      color: var(--text);
+    }
+    #theme-toggle svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ── Main layout ─────────────────────────────────────────────────────── */
+    main { max-width: 1200px; margin: 0 auto; padding: 28px 24px 48px; }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 900px) {
+      .app-grid { grid-template-columns: 1fr 400px; align-items: start; }
+    }
+    @media (min-width: 1100px) {
+      .app-grid { grid-template-columns: 1fr 460px; }
+    }
+
+    /* ── Cards ───────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .card + .card { margin-top: 16px; }
+
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 13px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    /* ── Form elements ───────────────────────────────────────────────────── */
+    label {
+      display: block;
+      font-size: 12px; font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    textarea, input[type="text"], select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    textarea:focus, input[type="text"]:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    textarea:hover:not(:focus), input[type="text"]:hover:not(:focus), select:hover:not(:focus) {
+      border-color: var(--border-hover);
+    }
+
+    /* Textarea */
+    #inputstring {
+      resize: vertical; min-height: 90px; max-height: 240px;
+      line-height: 1.6;
+    }
+
+    /* Char counter */
+    .char-row {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 6px;
+    }
+    .char-hint { font-size: 11px; color: var(--text-dim); }
+    #char-count {
+      font-size: 11px; color: var(--text-dim);
+      font-variant-numeric: tabular-nums;
+    }
+    #char-count.warn { color: var(--warn); }
+    #char-count.error { color: var(--error); }
+
+    /* Select arrow */
+    .select-wrap { position: relative; }
+    .select-wrap select { padding-right: 32px; cursor: pointer; }
+    .select-wrap::after {
+      content: '';
+      position: absolute; right: 10px; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--text-dim);
+      pointer-events: none;
+    }
+
+    /* Options grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .options-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 900px) {
+      .options-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1100px) {
+      .options-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .field { display: flex; flex-direction: column; }
+
+    /* ── Color pickers ───────────────────────────────────────────────────── */
+    .colors-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .colors-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .color-field label { margin-bottom: 8px; }
+
+    .color-picker-row {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .color-picker-row input[type="color"] {
+      width: 40px; height: 38px;
+      padding: 3px 3px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--input-bg);
+      cursor: pointer; flex-shrink: 0;
+    }
+    .color-picker-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-picker-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
+    .hex-input {
+      flex: 1; font-family: 'Courier New', monospace;
+      font-size: 13px; padding: 9px 10px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+
+    /* ── Color presets ───────────────────────────────────────────────────── */
+    .presets-row {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 14px;
+    }
+    .preset-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 10px; border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-muted); cursor: pointer;
+      font-size: 11px; font-weight: 500;
+      font-family: var(--font);
+      transition: all var(--transition);
+    }
+    .preset-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .preset-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 7px; padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font); font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none; outline: none;
+      transition: all var(--transition); text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 1px 3px rgba(99,102,241,0.4);
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.4); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      background: var(--surface-2); color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--surface); color: var(--text); border-color: var(--border-hover); }
+
+    .btn-success {
+      background: var(--success); color: #fff;
+    }
+    .btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .btn-sm { padding: 7px 14px; font-size: 13px; }
+    .btn-lg { padding: 13px 28px; font-size: 15px; width: 100%; }
+
+    #generate-btn { margin-top: 16px; }
+
+    /* ── Output panel ────────────────────────────────────────────────────── */
+    .output-card { position: sticky; top: 80px; }
+
+    .qr-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 280px; gap: 14px;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-dim);
+    }
+    .qr-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+    .qr-placeholder p { font-size: 13px; text-align: center; max-width: 180px; line-height: 1.5; }
+
+    #qr-image-wrap {
+      display: none;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow-md);
+    }
+    #qr-image-wrap img {
+      display: block; width: 100%; height: auto;
+    }
+
+    .qr-actions {
+      display: none;
+      gap: 10px; margin-top: 14px;
+    }
+    .qr-actions .btn { flex: 1; }
+
+    .qr-meta {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .qr-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .qr-meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .qr-meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); }
+    .qr-meta-val { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+
+    /* ── Validation error ────────────────────────────────────────────────── */
+    .error-msg {
+      font-size: 12px; color: var(--error);
+      margin-top: 5px; display: none;
+    }
+    .field.has-error input, .field.has-error select, .field.has-error textarea {
+      border-color: var(--error);
+    }
+    .field.has-error .error-msg { display: block; }
+
+    /* ── Footer ──────────────────────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim); font-size: 12px;
+    }
+    footer a { color: var(--text-dim); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── Responsive tweaks ───────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      main { padding: 16px 16px 40px; }
+      .header-inner { padding: 0 16px; }
+      .card { padding: 16px; }
+      #toast-container { bottom: 16px; right: 16px; left: 16px; max-width: none; }
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
- <div id="activityHolder"></div> 
-<div id="bodyContainer" class="container flex flex-wrap justify-center border rounded-lg bg-white shadow-md w-4/5">
-	<form id="qrcode-settings" action="qr.php"> 
-   		<div id="textInput" class="text-input-div justify-center mt-4 mb-3 text-center w-full">
-		    <input type="text" name="inputstring" id="inputstring" autocomplete="off" spellcheck="false" class="shadow appearance-none border rounded w-3/4 py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="QR Code Text Goes Here">
-		</div>
-		<div id="wrapperDiv" class="wrapper-div flex flex-wrap justify-center mb-4 mr-4 ml-4 text-center">
-			<div id="subWrapperDiv" class="options-div p-4 border rounded-lg bg-white shadow-md grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-3 mb-4 p-2 w-full">
-			    <div id="maskPatternDiv" class="sub-container px-1 mb-.5"> 
-	    		    <label id="maskpatternLabel" for="maskpattern" class="label-block block">Mask Pattern</label>
-	        		<select id="maskpattern" name="maskpattern" class="select-block options">
-	                    <option value="-1" selected="selected">-1</option>
-    	                <option value="0">0</option>
-        	            <option value="1">1</option>
-            	        <option value="2">2</option>
-                	    <option value="3">3</option>
-                    	<option value="4">4</option>
-                    	<option value="5">5</option>
-                    	<option value="6">6</option>
-	                    <option value="7">7</option>
-    	            </select>
-        	    </div>
-		 	 	<div id="quietZoneSizeDiv" class="sub-container px-1 mb-.5">
-    		    	<label for="quietzonesize" class="label-block block">QR Border Size</label>
-	        		<select id="quietzonesize" name="quietzonesize" class="select-block options">
-            	        <option value="0">0</option>
-                	    <option value="5" selected="selected">5</option>
-                    	<option value="10">10</option>
-                    	<option value="15">15</option>
-                    	<option value="20">20</option>
-	                    <option value="25">25</option>
-    	                <option value="30">30</option>
-        	        </select>
-            	</div>
-				<div id="outputTypeDiv" class="sub-container px-1 mb-.5">
-					<label id="outputTypeLabel" for="output_type" class="label-block block text-gray-700 mb-1">QR Image Format</label>
-					<select id="outputTypeSelect" class="select-block options" id="output_type" name="output_type">
-						<option value="png" selected="selected">Image - png</option>
-						<option value="jpg">Image - jpg</option>
-						<option value="gif">Image - gif</option>
-					</select>
-				</div>
-				<div id="scaleDiv" class="sub-container px-1">
-					<label id="scaleLabel" for="scale" class="label-block block text-gray-700 mb-1">QR Image Size</label>
-					<select id="scale" name="scale" class="select-block options">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5" selected="selected">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							<option value="10">10</option>
-					</select>
-				</div>
-			</div>
-			<div id="instructionsDiv" class="text-container mb-2 p-1">
-				<label id="instructionsLabel" class="label-block block text-green-700">The Elements Below Adjust The Various Sections of the QR Codes Colors.  By Default Everything Is Black.  You Do Not Have To Change A Color If You DO NOT Want To.</label>
-			</div>
-			<div id="csWrapperDiv" class="p-2 mb-1 mr-2 ml-2 border rounded-lg bg-white shadow-md w-full">
-				<div id="colorSelectContainterDiv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-3 mb-1 text-center">
-					<div id="finderDarkDiv" class="selector-div">
-						<label id="finderDarkLabel" for="m_finder_dark" class="label-block block">Square Brdr</label>
-						<select id="m_finder_dark" name="m_finder_dark" class="select-block options">
-							<option value="000000" selected>Black</option>
-							<option value="ffffff">White</option>
-							<option value="ff0000">Red</option>
-							<option value="00ff00">Green</option>
-							<option value="0000ff">Blue</option>
-							<option value="ffff00">Yellow</option>
-							<option value="800080">Purple</option>
-							<option value="ffa500">Orange</option>
-							<option value="008000">Dark Green</option>
-							<option value="a52a2a">Brown</option>
-							<option value="808080">Gray</option>
-							<option value="00ffff">Cyan</option>
-						</select>
-					</div>
-					<div id="finderDarkDotDiv" class="selector-div">
-						<label id="finderDotLabel" for="m_finder_dot_dark" class="label-block block">Square Cntr</label>
-						<select id="m_finder_dot_dark" name="m_finder_dot_dark" class="select-block options">
-							<option value="000000" selected>Black</option>
-							<option value="ffffff">White</option>
-							<option value="ff0000">Red</option>
-							<option value="00ff00">Green</option>
-							<option value="0000ff">Blue</option>
-							<option value="ffff00">Yellow</option>
-							<option value="800080">Purple</option>
-							<option value="ffa500">Orange</option>
-							<option value="008000">Dark Green</option>
-							<option value="a52a2a">Brown</option>
-							<option value="808080">Gray</option>
-							<option value="00ffff">Cyan</option>
-						</select>
-					</div>
-					<div id="alignmentDarkDiv" class="selector-div">
-						<label id="alignmentDarkLabel" for="m_alignment_dark" class="label-block block">Square Small</label>
-						<select id="m_alignment_dark" name="m_alignment_dark" class="select-block options">
-							<option value="000000" selected>Black</option>
-							<option value="ff0000">Red</option>
-							<option value="00ff00">Green</option>
-							<option value="0000ff">Blue</option>
-							<option value="ffff00">Yellow</option>
-							<option value="800080">Purple</option>
-							<option value="ffa500">Orange</option>
-							<option value="008000">Dark Green</option>
-							<option value="a52a2a">Brown</option>
-							<option value="808080">Gray</option>
-							<option value="00ffff">Cyan</option>
-						</select>
-					</div>
-					<div id="dataLightDiv" class="selector-div">
-						<label id="dataLightLabel" for="m_data_light" class="label-block block">QR Fill (Light)</label>
-						<select id="m_data_light" name="m_data_light" class="select-block options">
-							<option value="ffffff" selected>White</option>
-							<option value="000000">Black</option>
-							<option value="ff0000">Red</option>
-							<option value="00ff00">Green</option>
-							<option value="0000ff">Blue</option>
-							<option value="ffff00">Yellow</option>
-							<option value="800080">Purple</option>
-							<option value="ffa500">Orange</option>
-							<option value="008000">Dark Green</option>
-							<option value="a52a2a">Brown</option>
-							<option value="808080">Gray</option>
-							<option value="00ffff">Cyan</option>
-						</select>
-					</div>
-					<div id="dataDarkDiv" class="selector-div">
-						<label id="dataDarkLabel" for="m_data_dark" class="label-block">QR Fill (Dark)</label>
-						<select id="m_data_dark" name="m_data_dark" class="select-block options">
-							<option value="000000" selected>Black</option>
-							<option value="ff0000">Red</option>
-							<option value="00ff00">Green</option>
-							<option value="0000ff">Blue</option>
-							<option value="ffff00">Yellow</option>
-							<option value="800080">Purple</option>
-							<option value="ffa500">Orange</option>
-							<option value="008000">Dark Green</option>
-							<option value="a52a2a">Brown</option>
-							<option value="808080">Gray</option>
-							<option value="00ffff">Cyan</option>
-						</select>
-					</div>
-					<div id="quietZoneLightDiv" class="selector-div">
-						<label id="quietZoneLightLabel" for="m_quietzone_light" class="label-block block">QR Border</label>
-						<select id="m_quietzone_light" name="m_quietzone_light" class="select-block options">
-							<option value="ffffff" selected>White</option>
-							<option value="000000">Black</option>
-							<option value="ff0000">Red</option>
-							<option value="00ff00">Green</option>
-							<option value="0000ff">Blue</option>
-							<option value="ffff00">Yellow</option>
-							<option value="800080">Purple</option>
-							<option value="ffa500">Orange</option>
-							<option value="008000">Dark Green</option>
-							<option value="a52a2a">Brown</option>
-							<option value="808080">Gray</option>
-							<option value="00ffff">Cyan</option>
-						</select>
-					</div>
-				</div>
-			</div>
-		</div>
-    <div id="qrcode-output" class="mt-6 mb-6"></div>
-<div id="buttonsDiv" class="flex justify-center mb-2">
-    <button id="formSubmitButton" type="submit" class="submit-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Generate QR Code
+<body>
+
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <span class="spinner-label">Generating QR code…</span>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container" role="region" aria-label="Notifications" aria-live="polite"></div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <path d="M14 14h2v2h-2zM18 14h3v3h-3zM14 18h3v3h-3zM19 19h2v2h-2z"/>
+        </svg>
+      </div>
+      <span class="logo-title">QR Generator</span>
+      <span class="logo-badge">v2</span>
+    </div>
+
+    <button id="theme-toggle" aria-label="Toggle color theme" title="Toggle light/dark mode">
+      <svg id="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+      <svg id="theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span id="theme-label">Light mode</span>
     </button>
-    <a id="downloadButton" class="hidden download-button bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2">
-        Download QR Code
-    </a>
-</div>
-</form>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.1.1/jscolor.js"></script>
+  </div>
+</header>
+
+<!-- Main -->
+<main>
+  <div class="app-grid">
+
+    <!-- ── Left: Settings ────────────────────────────────────────────────── -->
+    <div class="settings-col">
+      <form id="qr-form" novalidate>
+
+        <!-- Content input -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Content</span>
+          </div>
+          <div class="field" id="field-inputstring">
+            <label for="inputstring">Text, URL or data to encode</label>
+            <textarea id="inputstring" name="inputstring"
+              placeholder="https://example.com  or any text…"
+              maxlength="4000" rows="3"
+              autocomplete="off" spellcheck="false"></textarea>
+            <div class="char-row">
+              <span class="char-hint">Supports URLs, plain text, contact info, Wi-Fi credentials…</span>
+              <span id="char-count">0 / 4000</span>
+            </div>
+            <span class="error-msg" id="err-inputstring"></span>
+          </div>
+        </div>
+
+        <!-- QR Settings -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Settings</span>
+          </div>
+          <div class="options-grid">
+
+            <div class="field" id="field-output_type">
+              <label for="output_type">Format</label>
+              <div class="select-wrap">
+                <select id="output_type" name="output_type">
+                  <option value="png" selected>PNG</option>
+                  <option value="jpg">JPG</option>
+                  <option value="gif">GIF</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" id="field-ecc_level">
+              <label for="ecc_level">
+                Error Correction
+                <span title="L=7%, M=15%, Q=25%, H=30% data recovery" style="cursor:help; color:var(--text-dim)"> ⓘ</span>
+              </label>
+              <div class="select-wrap">
+                <select id="ecc_level" name="ecc_level">
+                  <option value="L">L — Low (7%)</option>
+                  <option value="M">M — Medium (15%)</option>
+                  <option value="Q">Q — Quartile (25%)</option>
+                  <option value="H" selected>H — High (30%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" id="field-scale">
+              <label for="scale">Size (scale)</label>
+              <div class="select-wrap">
+                <select id="scale" name="scale">
+                  <option value="1">1×</option>
+                  <option value="2">2×</option>
+                  <option value="3">3×</option>
+                  <option value="4">4×</option>
+                  <option value="5" selected>5×</option>
+                  <option value="6">6×</option>
+                  <option value="7">7×</option>
+                  <option value="8">8×</option>
+                  <option value="9">9×</option>
+                  <option value="10">10×</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" id="field-quietzonesize">
+              <label for="quietzonesize">Border (quiet zone)</label>
+              <div class="select-wrap">
+                <select id="quietzonesize" name="quietzonesize">
+                  <option value="0">0 — None</option>
+                  <option value="2">2 — Minimal</option>
+                  <option value="4" selected>4 — Default</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="30">30 — Wide</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" id="field-maskpattern">
+              <label for="maskpattern">
+                Mask pattern
+                <span title="Auto (-1) lets the library choose the optimal mask" style="cursor:help; color:var(--text-dim)"> ⓘ</span>
+              </label>
+              <div class="select-wrap">
+                <select id="maskpattern" name="maskpattern">
+                  <option value="-1" selected>Auto</option>
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Colors -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Colors</span>
+          </div>
+
+          <!-- Presets -->
+          <div class="presets-row" id="preset-row" role="group" aria-label="Color presets"></div>
+
+          <div class="colors-grid">
+
+            <div class="color-field field" id="field-m_finder_dark">
+              <label for="picker-m_finder_dark">Finder border</label>
+              <div class="color-picker-row">
+                <input type="color" id="picker-m_finder_dark" value="#000000" aria-label="Finder border color picker">
+                <input type="text" class="hex-input" name="m_finder_dark" id="m_finder_dark"
+                  value="000000" maxlength="6" placeholder="000000" autocomplete="off" spellcheck="false">
+              </div>
+              <span class="error-msg"></span>
+            </div>
+
+            <div class="color-field field" id="field-m_finder_dot_dark">
+              <label for="picker-m_finder_dot_dark">Finder center</label>
+              <div class="color-picker-row">
+                <input type="color" id="picker-m_finder_dot_dark" value="#000000" aria-label="Finder center color picker">
+                <input type="text" class="hex-input" name="m_finder_dot_dark" id="m_finder_dot_dark"
+                  value="000000" maxlength="6" placeholder="000000" autocomplete="off" spellcheck="false">
+              </div>
+              <span class="error-msg"></span>
+            </div>
+
+            <div class="color-field field" id="field-m_alignment_dark">
+              <label for="picker-m_alignment_dark">Alignment dot</label>
+              <div class="color-picker-row">
+                <input type="color" id="picker-m_alignment_dark" value="#000000" aria-label="Alignment color picker">
+                <input type="text" class="hex-input" name="m_alignment_dark" id="m_alignment_dark"
+                  value="000000" maxlength="6" placeholder="000000" autocomplete="off" spellcheck="false">
+              </div>
+              <span class="error-msg"></span>
+            </div>
+
+            <div class="color-field field" id="field-m_data_dark">
+              <label for="picker-m_data_dark">Data (dark)</label>
+              <div class="color-picker-row">
+                <input type="color" id="picker-m_data_dark" value="#000000" aria-label="Data dark color picker">
+                <input type="text" class="hex-input" name="m_data_dark" id="m_data_dark"
+                  value="000000" maxlength="6" placeholder="000000" autocomplete="off" spellcheck="false">
+              </div>
+              <span class="error-msg"></span>
+            </div>
+
+            <div class="color-field field" id="field-m_data_light">
+              <label for="picker-m_data_light">Data (light)</label>
+              <div class="color-picker-row">
+                <input type="color" id="picker-m_data_light" value="#ffffff" aria-label="Data light color picker">
+                <input type="text" class="hex-input" name="m_data_light" id="m_data_light"
+                  value="ffffff" maxlength="6" placeholder="ffffff" autocomplete="off" spellcheck="false">
+              </div>
+              <span class="error-msg"></span>
+            </div>
+
+            <div class="color-field field" id="field-m_quietzone_light">
+              <label for="picker-m_quietzone_light">Background / border</label>
+              <div class="color-picker-row">
+                <input type="color" id="picker-m_quietzone_light" value="#ffffff" aria-label="Background color picker">
+                <input type="text" class="hex-input" name="m_quietzone_light" id="m_quietzone_light"
+                  value="ffffff" maxlength="6" placeholder="ffffff" autocomplete="off" spellcheck="false">
+              </div>
+              <span class="error-msg"></span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Generate button -->
+        <button type="submit" id="generate-btn" class="btn btn-primary btn-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <path d="M14 14h2v2h-2zM18 14h3v3h-3zM14 18h3v3h-3zM19 19h2v2h-2z"/>
+          </svg>
+          Generate QR Code
+        </button>
+
+      </form>
+    </div>
+
+    <!-- ── Right: Output ──────────────────────────────────────────────────── -->
+    <div class="output-col">
+      <div class="card output-card">
+        <div class="card-header">
+          <span class="card-title">Result</span>
+          <span id="qr-format-badge" style="display:none; font-size:11px; padding:2px 8px; border-radius:99px; background:var(--accent-dim); color:var(--accent); font-weight:600;"></span>
+        </div>
+
+        <!-- Placeholder -->
+        <div id="qr-placeholder" class="qr-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <path d="M14 14h2v2h-2zM18 14h3v3h-3zM14 18h3v3h-3zM19 19h2v2h-2z"/>
+          </svg>
+          <p>Your QR code will appear here after you click Generate</p>
+        </div>
+
+        <!-- QR image -->
+        <div id="qr-image-wrap"></div>
+
+        <!-- Actions -->
+        <div class="qr-actions" id="qr-actions">
+          <button id="copy-btn" class="btn btn-secondary btn-sm" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copy image
+          </button>
+          <a id="download-btn" class="btn btn-success btn-sm" href="#" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download
+          </a>
+        </div>
+
+        <!-- Meta info -->
+        <div class="qr-meta" id="qr-meta">
+          <div class="qr-meta-grid">
+            <div class="qr-meta-item">
+              <span class="qr-meta-label">Format</span>
+              <span class="qr-meta-val" id="meta-format">—</span>
+            </div>
+            <div class="qr-meta-item">
+              <span class="qr-meta-label">ECC Level</span>
+              <span class="qr-meta-val" id="meta-ecc">—</span>
+            </div>
+            <div class="qr-meta-item">
+              <span class="qr-meta-label">Content length</span>
+              <span class="qr-meta-val" id="meta-len">—</span>
+            </div>
+            <div class="qr-meta-item">
+              <span class="qr-meta-label">Scale</span>
+              <span class="qr-meta-val" id="meta-scale">—</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- .app-grid -->
+</main>
+
+<footer>
+  <p>Proudly powered by <a href="https://spindlecrank.com" target="_blank" rel="noopener">spindlecrank.com</a></p>
+</footer>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+
 <script>
-$(document).ready(function() {
-    const form = $('#qrcode-settings');
-    const output = $('#qrcode-output');
-    const downloadButton = $('#downloadButton');
-    const activityHolder = $('#activityHolder'); 
+/* ── Color presets ───────────────────────────────────────────────────────── */
+const PRESETS = [
+  { name: 'Classic',  dot: '000000', light: 'ffffff', bg: '#000' },
+  { name: 'Ocean',    dot: '1e40af', light: 'dbeafe', bg: '#1e40af' },
+  { name: 'Forest',   dot: '14532d', light: 'd1fae5', bg: '#14532d' },
+  { name: 'Rose',     dot: '9f1239', light: 'ffe4e6', bg: '#9f1239' },
+  { name: 'Violet',   dot: '4c1d95', light: 'ede9fe', bg: '#4c1d95' },
+  { name: 'Slate',    dot: '1e293b', light: 'f8fafc', bg: '#1e293b' },
+];
 
-    form.on('submit', handleSubmit);
+/* ── Toast system ────────────────────────────────────────────────────────── */
+const ICONS = {
+  success: `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  error:   `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+  info:    `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+};
 
-    function handleSubmit(event) {
-        event.preventDefault();
+function toast(type, title, msg, duration = 4000) {
+  const $c = $('#toast-container');
+  const id = 'toast-' + Date.now();
+  const $t = $(`
+    <div class="toast ${type}" id="${id}" role="alert">
+      ${ICONS[type] || ''}
+      <div class="toast-body">
+        <div class="toast-title">${title}</div>
+        ${msg ? `<div class="toast-msg">${msg}</div>` : ''}
+      </div>
+      <button class="toast-close" aria-label="Dismiss">✕</button>
+    </div>
+  `);
+  $c.append($t);
+  $t.find('.toast-close').on('click', () => removeToast($t));
+  if (duration > 0) setTimeout(() => removeToast($t), duration);
+}
 
-        $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function(response) {
-                const qrCodeImg = new Image();
-                qrCodeImg.src = response.qrcode;
+function removeToast($el) {
+  $el.addClass('removing');
+  setTimeout(() => $el.remove(), 260);
+}
 
-                output.html(response.qrcode);
-                output[0].scrollIntoView({ behavior: 'smooth' });
-                activityHolder.html(''); 
+/* ── Theme ───────────────────────────────────────────────────────────────── */
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const isDark = theme === 'dark';
+  $('#theme-icon-dark').toggle(!isDark);
+  $('#theme-icon-light').toggle(isDark);
+  $('#theme-label').text(isDark ? 'Light mode' : 'Dark mode');
+  localStorage.setItem('qr-theme', theme);
+}
 
-                const imageBlob = base64ToBlob(response.imageData, 'image/png');
-                const url = URL.createObjectURL(imageBlob);
+$('#theme-toggle').on('click', function() {
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
 
-                // Set the download link and make the button visible
-                downloadButton.attr('href', url)
-                              .attr('download', `qrcode_${Math.random().toString(36).substring(2)}.png`)
-                              .removeClass('hidden');
-            },
-            error: function(xhr) {
-                const response = xhr.responseJSON || {};
-                output.html(response.error || 'An error occurred');
-                activityHolder.html(''); 
-            }
-        });
-    }
+// Restore saved theme, or match system preference
+(function() {
+  const saved = localStorage.getItem('qr-theme');
+  if (saved) {
+    applyTheme(saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    applyTheme('light');
+  } else {
+    applyTheme('dark');
+  }
+})();
 
-		function base64ToBlob(base64, type) {
-    		const byteCharacters = atob(base64.split(',')[1]);
-    		const byteArrays = [];
-	
-    		for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-		        const slice = byteCharacters.slice(offset, offset + 1024);
-
-        		const byteNumbers = new Array(slice.length);
-        		for (let i = 0; i < slice.length; i++) {
-            		byteNumbers[i] = slice.charCodeAt(i);
-        		}
-
-        		const byteArray = new Uint8Array(byteNumbers);
-
-        		byteArrays.push(byteArray);
-    		}
-
-    		return new Blob(byteArrays, { type });
-		}
+/* ── Build presets ───────────────────────────────────────────────────────── */
+(function() {
+  const $row = $('#preset-row');
+  PRESETS.forEach(p => {
+    const $btn = $(`
+      <button type="button" class="preset-btn" data-preset='${JSON.stringify(p)}'>
+        <span class="preset-dot" style="background:${p.bg}; border:1px solid rgba(0,0,0,0.15);"></span>
+        ${p.name}
+      </button>
+    `);
+    $btn.on('click', function() {
+      const pr = $(this).data('preset');
+      const all = pr.dot;
+      setColor('m_finder_dark',    all);
+      setColor('m_finder_dot_dark', all);
+      setColor('m_alignment_dark', all);
+      setColor('m_data_dark',      all);
+      setColor('m_data_light',     pr.light);
+      setColor('m_quietzone_light', pr.light);
+      toast('info', `Preset applied`, `"${pr.name}" colors loaded`);
     });
+    $row.append($btn);
+  });
+})();
+
+function setColor(fieldId, hex) {
+  const clean = hex.replace('#', '').toLowerCase();
+  $('#' + fieldId).val(clean.toUpperCase());
+  $('#picker-' + fieldId).val('#' + clean);
+}
+
+/* ── Color picker sync ───────────────────────────────────────────────────── */
+$('input[type="color"]').on('input change', function() {
+  const id = this.id.replace('picker-', '');
+  $('#' + id).val(this.value.slice(1).toUpperCase());
+});
+
+$('.hex-input').on('input', function() {
+  const val = this.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
+  this.value = val;
+  if (/^[0-9a-fA-F]{6}$/.test(val)) {
+    $('#picker-' + this.id).val('#' + val);
+  }
+}).on('blur', function() {
+  // Pad to 6 chars if shorter
+  let val = this.value.replace(/[^0-9a-fA-F]/g, '');
+  if (val.length > 0 && val.length < 6) {
+    val = val.padEnd(6, '0');
+    this.value = val.toUpperCase();
+    $('#picker-' + this.id).val('#' + val);
+  }
+});
+
+/* ── Character counter ───────────────────────────────────────────────────── */
+$('#inputstring').on('input', function() {
+  const len = this.value.length;
+  const $c = $('#char-count');
+  $c.text(len + ' / 4000');
+  $c.toggleClass('warn',  len > 3000 && len <= 3800);
+  $c.toggleClass('error', len > 3800);
+});
+
+/* ── Client-side validation ──────────────────────────────────────────────── */
+function validateForm() {
+  let ok = true;
+
+  function setErr(fieldId, msg) {
+    const $field = $('#field-' + fieldId);
+    if (msg) {
+      $field.addClass('has-error');
+      $field.find('.error-msg').text(msg).show();
+      ok = false;
+    } else {
+      $field.removeClass('has-error');
+      $field.find('.error-msg').hide();
+    }
+  }
+
+  const input = $('#inputstring').val().trim();
+  if (!input) {
+    setErr('inputstring', 'Please enter some content to encode.');
+  } else if (input.length > 4000) {
+    setErr('inputstring', 'Content is too long (max 4000 characters).');
+  } else {
+    setErr('inputstring', '');
+  }
+
+  // Validate hex colors
+  const colorFields = ['m_finder_dark','m_finder_dot_dark','m_alignment_dark','m_data_dark','m_data_light','m_quietzone_light'];
+  colorFields.forEach(f => {
+    const val = $('#' + f).val();
+    if (!/^[0-9a-fA-F]{6}$/i.test(val)) {
+      setErr(f, 'Must be a valid 6-character hex color.');
+    } else {
+      setErr(f, '');
+    }
+  });
+
+  return ok;
+}
+
+/* ── Base64 → Blob ───────────────────────────────────────────────────────── */
+function base64ToBlob(dataUri, mime) {
+  const b64 = dataUri.split(',')[1];
+  const bytes = atob(b64);
+  const arr   = new Uint8Array(bytes.length);
+  for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+  return new Blob([arr], { type: mime });
+}
+
+/* ── Copy image to clipboard ─────────────────────────────────────────────── */
+async function copyImageToClipboard(dataUri, mime) {
+  try {
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      throw new Error('Clipboard API not supported');
+    }
+    const blob = base64ToBlob(dataUri, mime);
+    await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })]);
+    toast('success', 'Copied!', 'QR code image copied to clipboard');
+  } catch (err) {
+    toast('error', 'Copy failed', err.message || 'Your browser may not support this feature');
+  }
+}
+
+/* ── Show QR result ──────────────────────────────────────────────────────── */
+let currentDataUri = null;
+let currentMime    = 'image/png';
+let currentFmt     = 'png';
+
+function showResult(data) {
+  currentDataUri = data.imageData;
+  currentMime    = data.mime || 'image/png';
+  currentFmt     = data.format || 'png';
+
+  // Swap placeholder for image
+  $('#qr-placeholder').hide();
+  $('#qr-image-wrap').html(data.qrcode).show();
+
+  // Show actions
+  const $actions = $('#qr-actions').css('display','flex');
+  const blob = base64ToBlob(currentDataUri, currentMime);
+  const url  = URL.createObjectURL(blob);
+  const ext  = currentFmt === 'jpg' ? 'jpg' : currentFmt;
+  $('#download-btn')
+    .attr('href', url)
+    .attr('download', 'qrcode_' + Date.now() + '.' + ext);
+
+  // Format badge
+  $('#qr-format-badge').text(currentFmt.toUpperCase()).show();
+
+  // Meta info
+  $('#meta-format').text(currentFmt.toUpperCase());
+  $('#meta-ecc').text($('#ecc_level option:selected').text());
+  $('#meta-len').text($('#inputstring').val().length + ' chars');
+  $('#meta-scale').text($('#scale').val() + '×');
+  $('#qr-meta').show();
+
+  // Scroll output into view on mobile
+  if (window.innerWidth < 900) {
+    document.getElementById('qr-image-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+/* ── Form submit ─────────────────────────────────────────────────────────── */
+$('#qr-form').on('submit', function(e) {
+  e.preventDefault();
+
+  if (!validateForm()) {
+    toast('error', 'Please fix the errors', 'Check the highlighted fields');
+    return;
+  }
+
+  const $btn = $('#generate-btn');
+  $btn.prop('disabled', true);
+  $('#loading-overlay').addClass('active');
+
+  $.ajax({
+    type: 'POST',
+    url:  'qr.php',
+    data: $(this).serialize(),
+    timeout: 30000,
+    success: function(response) {
+      if (response.success) {
+        showResult(response);
+        toast('success', 'QR code ready!', 'Your code has been generated');
+      } else {
+        const msg = response.error || 'Unknown error from server';
+        toast('error', 'Generation failed', msg);
+      }
+    },
+    error: function(xhr, status) {
+      let msg = 'Server error — please try again';
+      if (status === 'timeout') {
+        msg = 'Request timed out — try a smaller scale or shorter content';
+      } else if (xhr.responseJSON && xhr.responseJSON.error) {
+        msg = xhr.responseJSON.error;
+        if (xhr.responseJSON.fields) {
+          const fieldErrs = Object.values(xhr.responseJSON.fields).join('; ');
+          msg += ': ' + fieldErrs;
+        }
+      } else if (xhr.status === 0) {
+        msg = 'Network error — check your connection';
+      }
+      toast('error', 'Failed to generate QR code', msg);
+    },
+    complete: function() {
+      $btn.prop('disabled', false);
+      $('#loading-overlay').removeClass('active');
+    }
+  });
+});
+
+/* ── Copy button ─────────────────────────────────────────────────────────── */
+$('#copy-btn').on('click', function() {
+  if (currentDataUri) copyImageToClipboard(currentDataUri, currentMime);
+});
+
+/* ── Keyboard shortcut: Ctrl/Cmd + Enter to generate ─────────────────────── */
+$(document).on('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    $('#qr-form').trigger('submit');
+  }
+});
 </script>
 </body>
 </html>
